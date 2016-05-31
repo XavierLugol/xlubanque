@@ -1,8 +1,5 @@
 package fr.xlu.banque.xlubanque;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -185,5 +182,4 @@ public class Banque {
 		BanqueBase banqueB = new BanqueBase(this);
 		return !(banqueB.getClientBase(nom,prenom) == null);
 	}
-
 }

@@ -1,9 +1,5 @@
 package fr.xlu.banque.xlubanque;
 
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 public class Compte {
 	private String num;
 	private double solde;
