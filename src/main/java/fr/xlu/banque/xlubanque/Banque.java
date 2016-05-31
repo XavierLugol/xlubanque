@@ -72,7 +72,8 @@ public class Banque {
 	// Add the client in parameters in the list of clients
 	// if not found in the list.
 	// Return the client in parameter ???
-	public Client ajouteClient(Client client) {
+	protected Client ajouteClient(Client client) {
+		client.setBanque_id(this.getBanqueId());
 		if (!this.existeClient(client.getNom(), client.getPrenom())) {
 			BanqueBase banqueB = new BanqueBase(this);
 			banqueB.ajouteClientBase(client);
@@ -99,7 +100,7 @@ public class Banque {
 		return this.ajouteClient(client);
 	}
 
-	public boolean supprimeClient(Client client) {
+	protected boolean supprimeClient(Client client) {
 		boolean result = false;
 
 		BanqueBase banqueB = new BanqueBase(this);
@@ -178,7 +179,7 @@ public class Banque {
 		return "Banque avec " + this.getClients().size() + " clients et " + this.getComptes().size() + " comptes";
 	}
 
-	private boolean existeClient(String nom, String prenom) {
+	protected boolean existeClient(String nom, String prenom) {
 		BanqueBase banqueB = new BanqueBase(this);
 		return !(banqueB.getClientBase(nom,prenom) == null);
 	}

@@ -8,8 +8,15 @@ public class Client {
 	private String prenom;
 	private String nomComplet;
 	private int id;
+	private int banque_id;
 	private List<Compte> comptes = new ArrayList<>();
 	
+	public int getBanque_id() {
+		return banque_id;
+	}
+	public void setBanque_id(int banque_id) {
+		this.banque_id = banque_id;
+	}
 	
 	public int getId() {
 		return id;

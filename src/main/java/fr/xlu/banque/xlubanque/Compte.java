@@ -48,12 +48,13 @@ public class Compte {
 	
 	public void credite(double montant){
 		this.setSolde(montant + this.getSolde());
-		
 	}
 	
-	public void debite(double montant){
+	public void debite(double montant) throws BanqueException{
+		if (this.getSolde() - montant < 0) {
+			throw new BanqueException("Debit impossible. Compte insuffisamment approvisionné.");
+		}
 		this.setSolde(montant - this.getSolde());
-		
 	}
 
 	@Override
