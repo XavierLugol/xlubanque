@@ -11,16 +11,16 @@ import java.util.List;
 public class Banque {
 	private List<Compte> comptes = new ArrayList<>();
 	private List<Client> clients = new ArrayList<>();
-	private Integer banqueId;
+	private Integer id;
 	private String nom;
 
 	
-	public Integer getBanqueId() {
-		return banqueId;
+	public Integer geId() {
+		return id;
 	}
 
-	public void setBanqueId(Integer banqueId) {
-		this.banqueId = banqueId;
+	public void setId(Integer banqueId) {
+		this.id = banqueId;
 	}
 
 	public String getNom() {
@@ -73,10 +73,10 @@ public class Banque {
 	// if not found in the list.
 	// Return the client in parameter ???
 	protected Client ajouteClient(Client client) {
-		client.setBanque_id(this.getBanqueId());
+		client.setBanque_id(this.geId());
 		if (!this.existeClient(client.getNom(), client.getPrenom())) {
-			BanqueBase banqueB = new BanqueBase(this);
-			banqueB.ajouteClientBase(client);
+			BanqueManager banqueM = new BanqueManager(this);
+			banqueM.ajouteClientBase(client);
 			this.getClients().add(client);
 		}
 		return client;
@@ -103,12 +103,12 @@ public class Banque {
 	protected boolean supprimeClient(Client client) {
 		boolean result = false;
 
-		BanqueBase banqueB = new BanqueBase(this);
+		BanqueManager banqueM = new BanqueManager(this);
 		if (!(client == null)) {
 			for (Compte compte : client.getComptes()) {
 				this.getComptes().remove(compte);
 			}
-			result = banqueB.supprimeClientBase(client);
+			result = banqueM.supprimeClientBase(client);
 			if (result) {
 				this.getClients().remove(client);
 			}
@@ -132,8 +132,8 @@ public class Banque {
 	public boolean ouvreCompte(Client client, double depot) {
 		this.ajouteClient(client);
 		Compte compte = new Compte(client, depot);
-		BanqueBase banqueB = new BanqueBase(this);
-		banqueB.ouvreCompteBase(compte);
+		BanqueManager banqueM = new BanqueManager(this);
+		banqueM.ouvreCompteBase(compte);
 		client.addCompte(compte);
 		this.getComptes().add(compte);
 		return true;
@@ -180,7 +180,7 @@ public class Banque {
 	}
 
 	protected boolean existeClient(String nom, String prenom) {
-		BanqueBase banqueB = new BanqueBase(this);
-		return !(banqueB.getClientBase(nom,prenom) == null);
+		BanqueManager banqueM = new BanqueManager(this);
+		return !(banqueM.getClientBase(nom,prenom) == null);
 	}
 }

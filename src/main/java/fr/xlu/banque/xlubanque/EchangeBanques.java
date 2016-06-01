@@ -9,7 +9,7 @@ public class EchangeBanques {
 	public static boolean transfertMontantCompte(int banque_id1,int banque_id2, String num1, String num2, double montant) {
 		Banque banque1 = new Banque();
 		Banque banque2 = new Banque();
-		banque1.setBanqueId(banque_id1);
+		banque1.setId(banque_id1);
 		if (banque_id1 == banque_id2) {
 			banque2 = banque1;
 		}

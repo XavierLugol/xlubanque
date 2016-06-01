@@ -12,7 +12,7 @@ public class BanqueTest {
 	public void setup() {
 		// Given
 		banque = new BanqueTestable();
-		banque.setBanqueId(7);
+		banque.setId(7);
 		try {
 			xlu = new Client("Lugol","Xavier");
 			Client xlu2 = new Client("Lugol","Xavier");
@@ -25,6 +25,17 @@ public class BanqueTest {
 		}
 	}
 
+@Test()
+	public void ajouteBanquetest() {
+		BanqueManager banqueM = new BanqueManager();
+		try {
+			Banque banque = banqueM.ajoutBanque("Banque de l''est");
+			assertEquals(banque.getNom(),"Banque de l'est");
+		} catch (BanqueException be) {
+			  assert(be.getMessage().contains("doit"));			
+		}
+	}
+	
 	@Test
 	public void testAjouteClient(){
 	//when
