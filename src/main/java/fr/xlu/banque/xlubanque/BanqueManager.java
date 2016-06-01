@@ -26,6 +26,8 @@ public class BanqueManager {
 	}
 
 /**
+ * Ajoute la banque dont le nom est passé en paramètre dans la
+ * base de données
  * @author Xavier Lugol
  * @param nom : nom de la banque à créer 
  * @return : une instance de la banque créé ou trouvée en base.
