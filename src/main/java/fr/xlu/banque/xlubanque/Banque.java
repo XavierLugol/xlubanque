@@ -6,7 +6,7 @@ import java.util.List;
 /** 
  * 
  * @author Xavier
- * @category Banque
+ * 
  */
 public class Banque {
 	private List<Compte> comptes = new ArrayList<>();
