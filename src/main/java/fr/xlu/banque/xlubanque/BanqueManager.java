@@ -25,16 +25,19 @@ public class BanqueManager {
 		this.banque = banque;
 	}
 
-/**
- * Ajoute la banque dont le nom est passé en paramètre dans la
- * base de données
- * @author Xavier Lugol
- * @param nom : nom de la banque à créer 
- * @return : une instance de la banque créé ou trouvée en base.
- * @throws BanqueException
- *
- */
-	public Banque ajoutBanque(String nom) throws BanqueException{
+	/**
+	 * 
+	 * Ajoute la banque dont le nom est passé en paramètre dans la base de
+	 * données
+	 * 
+	 * @author Xavier Lugol
+	 * @param nom
+	 *            : nom de la banque à créer
+	 * @return : une instance de la banque créé ou trouvée en base.
+	 * @throws BanqueException
+	 *
+	 */
+	public Banque ajoutBanque(String nom) throws BanqueException {
 		Connexion con = new Connexion();
 		// Vérification que le nom de la banque est suffisamment rempli
 		if ((nom == null) || nom.length() < 2) {
@@ -47,15 +50,13 @@ public class BanqueManager {
 		} else {
 			banque = new Banque();
 		}
-		
+
 		// Insertion de la banque en base
-		String insertBanque = "INSERT INTO banque.banque (nom)"
-				+ " VALUES (" 
-				+ "'" + nom + "'" + ")";
+		String insertBanque = "INSERT INTO banque.banque (nom)" + " VALUES (" + "'" + nom + "'" + ")";
 		try {
 			Statement st = con.getConnexion().createStatement();
 			st.execute(insertBanque, Statement.RETURN_GENERATED_KEYS);
-			ResultSet rs = st.getGeneratedKeys();	
+			ResultSet rs = st.getGeneratedKeys();
 			rs.next();
 			banque.setId(rs.getInt("ID"));
 			banque.setNom(nom);
@@ -65,22 +66,18 @@ public class BanqueManager {
 			System.out.println(e.getMessage());
 			return null;
 		}
-		
+
 	}
 
-	public boolean ouvreCompteBase (Compte compte){
+	public boolean ouvreCompteBase(Compte compte) {
 		Connexion con = new Connexion();
-		Client client = this.getClientBase(compte.getClient().getNom(),compte.getClient().getPrenom());
-		String insertCompte = "INSERT INTO banque.compte" 
-				+ " (num,client_id,banque_id)"
-				+ " VALUES (" 
-				+ "'" + compte.getNum() + "'" + "," 
-				+ "'" + client.getId() + "'" + "," 
-				+ this.getBanque().geId() + ")";
+		Client client = this.getClientBase(compte.getClient().getNom(), compte.getClient().getPrenom());
+		String insertCompte = "INSERT INTO banque.compte" + " (num,client_id,banque_id)" + " VALUES (" + "'"
+				+ compte.getNum() + "'" + "," + "'" + client.getId() + "'" + "," + this.getBanque().geId() + ")";
 		try {
 			Statement st = con.getConnexion().createStatement();
 			st.execute(insertCompte, Statement.RETURN_GENERATED_KEYS);
-			ResultSet rs = st.getGeneratedKeys();	
+			ResultSet rs = st.getGeneratedKeys();
 			rs.next();
 			compte.setId(rs.getInt("ID"));
 			rs.close();
@@ -94,16 +91,13 @@ public class BanqueManager {
 
 	public boolean ajouteClientBase(Client client) {
 		Connexion con = new Connexion();
-		String insertClient = "INSERT INTO banque.client (nom,prenom,nom_complet,banque_id)"
-				+ " VALUES (" 
-				+ "'" + client.getNom() + "'" + "," 
-				+ "'" + client.getPrenom() + "'" + "," 
-				+ "'" + client.getNomComplet() + "'" + "," 
-				+ this.getBanque().geId() + ")";
+		String insertClient = "INSERT INTO banque.client (nom,prenom,nom_complet,banque_id)" + " VALUES (" + "'"
+				+ client.getNom() + "'" + "," + "'" + client.getPrenom() + "'" + "," + "'" + client.getNomComplet()
+				+ "'" + "," + this.getBanque().geId() + ")";
 		try {
 			Statement st = con.getConnexion().createStatement();
 			st.execute(insertClient, Statement.RETURN_GENERATED_KEYS);
-			ResultSet rs = st.getGeneratedKeys();	
+			ResultSet rs = st.getGeneratedKeys();
 			rs.next();
 			client.setId(rs.getInt("ID"));
 			rs.close();
@@ -114,60 +108,53 @@ public class BanqueManager {
 			return false;
 		}
 	}
-	
+
 	public boolean supprimeClientBase(Client client) {
 		Connexion con = new Connexion();
-		String deleteClient = "DELETE FROM banque.client WHERE "
-				+ " nom = " + "'" + client.getNom() + "'" 
-				+ " AND prenom = " + "'" + client.getPrenom() + "'" 
-				+ " AND banque_id = "  + this.getBanque().geId();
+		String deleteClient = "DELETE FROM banque.client WHERE " + " nom = " + "'" + client.getNom() + "'"
+				+ " AND prenom = " + "'" + client.getPrenom() + "'" + " AND banque_id = " + this.getBanque().geId();
 		System.out.println(deleteClient);
 		try {
 			Statement st = con.getConnexion().createStatement();
 			st.execute(deleteClient);
 			return this.supprimeCompteBase(client);
 		} catch (SQLException e) {
-//			System.out.println(deleteClient);
+			// System.out.println(deleteClient);
 			System.out.println(e.getMessage());
 			return false;
-		}		
+		}
 	}
 
 	public boolean supprimeCompteBase(Client client) {
 		Connexion con = new Connexion();
-		String deleteCompte = "DELETE FROM banque.compte WHERE "
-				+ " client_id = " + client.getId()
-				+ " AND banque_id = "  + this.getBanque().geId();
-//		System.out.println(deleteCompte);
+		String deleteCompte = "DELETE FROM banque.compte WHERE " + " client_id = " + client.getId()
+				+ " AND banque_id = " + this.getBanque().geId();
+		// System.out.println(deleteCompte);
 		try {
 			Statement st = con.getConnexion().createStatement();
 			return st.execute(deleteCompte);
 		} catch (SQLException e) {
-//			System.out.println(deleteCompte);
+			// System.out.println(deleteCompte);
 			System.out.println(e.getMessage());
 			return false;
-		}		
+		}
 	}
 
 	public Client getClientBase(String nom, String prenom) {
 		Connexion con = new Connexion();
-		String selectClient = "SELECT id,nomcomplet" 
-				+ " FROM banque.client WHERE "
-				+ " nom = " + "'" + nom + "'" 
-				+ " AND prenom = " + "'" + prenom + "'" 
-				+ " AND banque_id = "  + this.getBanque().geId();
+		String selectClient = "SELECT id,nomcomplet" + " FROM banque.client WHERE " + " nom = " + "'" + nom + "'"
+				+ " AND prenom = " + "'" + prenom + "'" + " AND banque_id = " + this.getBanque().geId();
 		try {
 			Statement st = con.getConnexion().createStatement();
 			st.execute(selectClient);
 			ResultSet rs = st.getResultSet();
 			if (rs.next()) {
 				try {
-					Client client = new Client(nom,prenom);
+					Client client = new Client(nom, prenom);
 					client.setId(rs.getInt("ID"));
 					client.setNomComplet(rs.getString("NOMCOMPLET"));
 					return client;
-				}
-				catch (BanqueException be) {
+				} catch (BanqueException be) {
 					System.out.println(be.getMessage());
 					return null;
 				}
@@ -179,14 +166,12 @@ public class BanqueManager {
 			System.out.println(e.getMessage());
 			return null;
 		}
-		
+
 	}
 
 	public Banque getBanque(String nom) {
 		Connexion con = new Connexion();
-		String selectBanque = "SELECT id,nom" 
-				+ " FROM banque.banque WHERE "
-				+ " nom = " + "'" + nom + "'" ;
+		String selectBanque = "SELECT id,nom" + " FROM banque.banque WHERE " + " nom = " + "'" + nom + "'";
 		try {
 			Statement st = con.getConnexion().createStatement();
 			st.execute(selectBanque);
@@ -203,7 +188,7 @@ public class BanqueManager {
 			System.out.println(selectBanque);
 			System.out.println(e.getMessage());
 			return null;
-		}		
+		}
 	}
 
 }
