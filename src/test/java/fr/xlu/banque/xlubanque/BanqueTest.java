@@ -31,7 +31,7 @@ public class BanqueTest {
 	// Le test est fait dans le setup
 	// Then
 //	assertTrue(true);
-	assertEquals(banque.getClients().size(),2);
+	assertEquals(banque.getClients().size(),4);
 	}
 	
 	@Test
