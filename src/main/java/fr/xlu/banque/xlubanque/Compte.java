@@ -4,8 +4,26 @@ public class Compte {
 	private String num;
 	private double solde;
 	private int id;
+	private int client_id;
+	private int banque_id;
 	private Client client;
 
+
+	public int getClient_id() {
+		return client_id;
+	}
+
+	public void setClient_id(int client_id) {
+		this.client_id = client_id;
+	}
+
+	public int getBanque_id() {
+		return banque_id;
+	}
+
+	public void setBanque_id(int banque_id) {
+		this.banque_id = banque_id;
+	}
 
 	public int getId() {
 		return id;

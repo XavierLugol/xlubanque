@@ -15,7 +15,7 @@ public class Banque {
 	private String nom;
 
 	
-	public Integer geId() {
+	public Integer getId() {
 		return id;
 	}
 
@@ -50,12 +50,8 @@ public class Banque {
 	// Return the object Client having the same nom and prenom
 	// that the parameters in the List of clients. Return null if not found
 	public Client getClient(String nom, String prenom) {
-		for (Client client : this.getClients()) {
-			if (client.getNom().equals(nom) && client.getPrenom().equals(prenom)) {
-				return client;
-			}
-		}
-		return null;
+		ClientManager clientM = new ClientManager();
+		return clientM.getClient(nom, prenom,this.getId());
 	}
 
 	// Return the object Compte having the same num
@@ -73,10 +69,10 @@ public class Banque {
 	// if not found in the list.
 	// Return the client in parameter ???
 	protected Client ajouteClient(Client client) {
-		client.setBanque_id(this.geId());
+		client.setBanque_id(this.getId());
 		if (!this.existeClient(client.getNom(), client.getPrenom())) {
-			BanqueManager banqueM = new BanqueManager(this);
-			banqueM.ajouteClientBase(client);
+			ClientManager clientM = new ClientManager();
+			clientM.ajoutClient(client);
 			this.getClients().add(client);
 		}
 		return client;
@@ -102,13 +98,13 @@ public class Banque {
 
 	protected boolean supprimeClient(Client client) {
 		boolean result = false;
-
-		BanqueManager banqueM = new BanqueManager(this);
+		ClientManager clientM = new ClientManager();
 		if (!(client == null)) {
 			for (Compte compte : client.getComptes()) {
 				this.getComptes().remove(compte);
 			}
-			result = banqueM.supprimeClientBase(client);
+			client.setBanque_id(this.getId());
+			result = clientM.supprimeClient(client);
 			if (result) {
 				this.getClients().remove(client);
 			}
@@ -132,8 +128,8 @@ public class Banque {
 	public boolean ouvreCompte(Client client, double depot) {
 		this.ajouteClient(client);
 		Compte compte = new Compte(client, depot);
-		BanqueManager banqueM = new BanqueManager(this);
-		banqueM.ouvreCompteBase(compte);
+		CompteManager compteM = new CompteManager();
+		compteM.ajoutCompte(compte);
 		client.addCompte(compte);
 		this.getComptes().add(compte);
 		return true;
@@ -180,7 +176,7 @@ public class Banque {
 	}
 
 	protected boolean existeClient(String nom, String prenom) {
-		BanqueManager banqueM = new BanqueManager(this);
-		return !(banqueM.getClientBase(nom,prenom) == null);
+		ClientManager clientM = new ClientManager();
+		return !(clientM.getClient(nom,prenom,this.getId()) == null);
 	}
 }
